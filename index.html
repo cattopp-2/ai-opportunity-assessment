@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Opportunity Assessment - Your Web Toolkit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #215E8D;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #215E8D;
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .intro-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .intro-section p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .question h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .question-number {
+            color: #215E8D;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #215E8D;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #215E8D;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #F6AD55;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(246, 173, 85, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            margin-bottom: 30px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #F6AD55;
+            transition: width 0.3s;
+        }
+
+        .lead-form {
+            display: none;
+        }
+
+        .lead-form.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #215E8D;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .result-header {
+            background: #215E8D;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .result-header h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .result-content {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .result-content h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .result-content ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .result-content li {
+            margin-bottom: 10px;
+        }
+
+        .cta-box {
+            background: #215E8D;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .cta-box h3 {
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+
+        .start-btn {
+            background: #F6AD55;
+            color: #000;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(246, 173, 85, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <p>AI-powered business automation for coaches and course creators</p>
+        </div>
+
+        <div class="content">
+            <!-- Intro Section -->
+            <div class="intro-section" id="intro">
+                <h2>AI Opportunity Assessment</h2>
+                <p>Discover your AI growth path and get a personalised roadmap to implement AI into your business.</p>
+                <button class="start-btn" onclick="startQuiz()">Start Assessment</button>
+            </div>
+
+            <!-- Quiz Section -->
+            <div id="quiz" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+
+                <!-- Question 1 -->
+                <div class="question-container active" data-question="1">
+                    <div class="question">
+                        <span class="question-number">Question 1 of 8</span>
+                        <h3>How consistent is your content creation process?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q1" value="1">
+                                <span>Ad-hoc - I create content when inspiration strikes</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="2">
+                                <span>Semi-regular - I try to post weekly but often miss deadlines</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="3">
+                                <span>Consistent - I have a regular schedule and stick to it</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="4">
+                                <span>Systematised - I have documented processes and templates</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-container" data-question="2">
+                    <div class="question">
+                        <span class="question-number">Question 2 of 8</span>
+                        <h3>Which of these tasks take up most of your time?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q2" value="1">
+                                <span>Strategic work - planning, client delivery, high-level content</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="2">
+                                <span>Mix of strategic and admin - some repetition but manageable</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="3">
+                                <span>Content formatting, social media posting, email writing</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="4">
+                                <span>Doing the same tasks over and over - repurposing, scheduling, responding</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-container" data-question="3">
+                    <div class="question">
+                        <span class="question-number">Question 3 of 8</span>
+                        <h3>How documented are your business processes?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q3" value="1">
+                                <span>Not documented - it's all in my head</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="2">
+                                <span>Partially documented - some notes and rough outlines</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="3">
+                                <span>Well documented - clear SOPs for key processes</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="4">
+                                <span>Fully systematised - comprehensive documentation and templates</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-container" data-question="4">
+                    <div class="question">
+                        <span class="question-number">Question 4 of 8</span>
+                        <h3>What's your current monthly revenue?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q4" value="1">
+                                <span>Pre-revenue or under £1,000</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="2">
+                                <span>£1,000 - £5,000</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="3">
+                                <span>£5,000 - £15,000</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="4">
+                                <span>£15,000+</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-container" data-question="5">
+                    <div class="question">
+                        <span class="question-number">Question 5 of 8</span>
+                        <h3>What's your biggest bottleneck right now?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q5" value="1">
+                                <span>Getting started - I need to clarify my offer first</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="2">
+                                <span>Content creation - I can't keep up with demand</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="3">
+                                <span>Lead generation - I need more visibility and leads</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="4">
+                                <span>Scaling delivery - I'm maxed out on capacity</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-container" data-question="6">
+                    <div class="question">
+                        <span class="question-number">Question 6 of 8</span>
+                        <h3>How comfortable are you with technology?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q6" value="1">
+                                <span>Beginner - I stick to basic tools I already know</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="2">
+                                <span>Intermediate - I can learn new tools with guidance</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="3">
+                                <span>Advanced - I'm comfortable with most platforms</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="4">
+                                <span>Expert - I love exploring new tech and integrations</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-container" data-question="7">
+                    <div class="question">
+                        <span class="question-number">Question 7 of 8</span>
+                        <h3>Do you have team members or contractors?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q7" value="1">
+                                <span>Solo - it's just me</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q7" value="2">
+                                <span>1-2 part-time contractors</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q7" value="3">
+                                <span>Small team (3-5 people)</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q7" value="4">
+                                <span>Established team (6+ people)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-container" data-question="8">
+                    <div class="question">
+                        <span class="question-number">Question 8 of 8</span>
+                        <h3>What's your main goal for the next 6 months?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q8" value="1">
+                                <span>Launch or refine my core offer</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q8" value="2">
+                                <span>Build consistent marketing systems</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q8" value="3">
+                                <span>Increase revenue and client base</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q8" value="4">
+                                <span>Scale operations and free up my time</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display: none;">Previous</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <!-- Lead Form -->
+            <div class="lead-form" id="leadForm">
+                <div class="question">
+                    <h3>Get Your Personalised AI Opportunity Report</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Enter your details to receive your customised assessment results and AI implementation roadmap.</p>
+                    
+                    <form id="contactForm" onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="business">Business Name (Optional)</label>
+                            <input type="text" id="business" name="business">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Get My Results</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results" id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 8;
+        const answers = {};
+
+        function startQuiz() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion - 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function nextQuestion() {
+            const currentAnswer = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            
+            if (!currentAnswer) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+
+            answers[`q${currentQuestion}`] = parseInt(currentAnswer.value);
+
+            if (currentQuestion < totalQuestions) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateProgress();
+                
+                document.getElementById('prevBtn').style.display = 'block';
+                
+                if (currentQuestion === totalQuestions) {
+                    document.getElementById('nextBtn').textContent = 'See My Results';
+                }
+            } else {
+                // Move to lead form
+                document.getElementById('quiz').style.display = 'none';
+                document.getElementById('leadForm').classList.add('active');
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion--;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateProgress();
+                
+                if (currentQuestion === 1) {
+                    document.getElementById('prevBtn').style.display = 'none';
+                }
+                
+                document.getElementById('nextBtn').textContent = 'Next';
+            }
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                business: document.getElementById('business').value,
+                answers: answers,
+                segment: calculateSegment(),
+                timestamp: new Date().toISOString()
+            };
+
+            // Log to console (replace with your webhook/API call)
+            console.log('Form Data:', formData);
+            
+            // TODO: Send to Make.com webhook
+            // fetch('YOUR_WEBHOOK_URL', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // });
+
+            displayResults(formData.segment);
+        }
+
+        function calculateSegment() {
+            const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const average = total / totalQuestions;
+
+            // Analyze specific patterns
+            const hasProcesses = answers.q3 >= 3;
+            const hasRevenue = answers.q4 >= 3;
+            const hasTimeIssues = answers.q2 >= 3;
+            const isSystematic = answers.q1 >= 3;
+
+            if (average <= 1.75) {
+                return 'foundation';
+            } else if (average <= 2.5) {
+                return 'ready';
+            } else {
+                // Anyone with average > 2.5 OR the special pattern goes to scale
+                return 'scale';
+            }
+        }
+
+        function displayResults(segment) {
+            document.getElementById('leadForm').classList.remove('active');
+            const resultsDiv = document.getElementById('results');
+            
+            const segments = {
+                foundation: {
+                    title: '🌱 Foundation Builder',
+                    subtitle: 'Build Your Systems First, Then Automate',
+                    description: 'Your business is in the early stages, and that\'s perfectly fine! Before diving into AI automation, you need to establish consistent processes and systems. Think of AI as an accelerator - but you need something solid to accelerate first.',
+                    recommendations: [
+                        'Document your current processes, even if they\'re simple',
+                        'Establish a consistent content creation routine',
+                        'Start with basic automation using templates and scheduling tools',
+                        'Focus on one or two core marketing channels first',
+                        'Learn how to train AI to write in your voice using proven frameworks'
+                    ],
+                    nextSteps: 'Start with foundational systems and learn how to use AI effectively. The Copy Whisperer will help you train AI to sound like you, and you can learn to build custom bots that support your specific workflows.',
+                    timeline: '3-6 months to establish systems, then ready for AI implementation',
+                    buttons: [
+                        { text: 'Book Free Strategy Session', url: 'https://copywriterinyourpocket.com/ai-strategy-session', primary: true },
+                        { text: 'Get The Copy Whisperer', url: 'https://copywriterinyourpocket.com/copy-whisperer', primary: false },
+                        { text: 'Learn To Build Custom Bots', url: 'https://copywriterinyourpocket.com/build-custom-bots', primary: false }
+                    ]
+                },
+                ready: {
+                    title: '🚀 Ready to Automate',
+                    subtitle: 'Perfect Timing for AI Implementation',
+                    description: 'You\'re in the sweet spot! You have established processes that are working, but they\'re eating up too much of your time. AI automation can give you significant time savings while maintaining quality.',
+                    recommendations: [
+                        'Automate your content repurposing (blog posts to social media, videos to multiple formats)',
+                        'Implement AI-powered email sequences and follow-ups',
+                        'Set up automated lead capture and qualification systems',
+                        'Create custom GPTs for your specific business workflows',
+                        'Build systems to transform one piece of content into 10+ assets'
+                    ],
+                    nextSteps: 'You\'re ready for a custom AI automation strategy. The AI Growth Lab gives you hands-on support to build the assets that actually move the needle - from custom bots to content systems that work while you sleep.',
+                    timeline: '4-8 weeks to implement your first automation systems',
+                    buttons: [
+                        { text: 'Book Free Strategy Session', url: 'https://copywriterinyourpocket.com/ai-strategy-session', primary: true },
+                        { text: 'Join AI Growth Lab Waiting List', url: 'https://copywriterinyourpocket.com/ai-growth-lab-waiting-list', primary: false }
+                    ]
+                },
+                scale: {
+                    title: '📈 Scale Accelerator',
+                    subtitle: 'Multiply Your Output Without Burning Out',
+                    description: 'You\'ve built a solid business, but you\'re hitting capacity constraints. AI can help you scale operations without proportionally scaling your time investment or team size.',
+                    recommendations: [
+                        'Implement advanced content multiplication systems',
+                        'Create AI-powered course creation and delivery workflows',
+                        'Build automated client onboarding and support systems',
+                        'Develop custom AI tools for your specific methodology',
+                        'Integrate AI across your entire marketing funnel',
+                        'Set up data-driven optimisation using AI analytics'
+                    ],
+                    nextSteps: 'You\'re ready for strategic AI implementation across multiple business areas. An AI Audit will give you a complete 90-day roadmap showing where you\'re wasting time and how to plug revenue leaks, plus identify your biggest opportunities for automation.',
+                    buttons: [
+                        { text: 'Book Free Strategy Session', url: 'https://copywriterinyourpocket.com/ai-strategy-session', primary: true },
+                        { text: 'Get Your AI Audit (£100)', url: 'https://links.usegoldstar.com/widget/booking/X87mTJEzyUAxjDwJgT5b', primary: false }
+                    ]
+                }
+            };
+
+            const result = segments[segment];
+
+            resultsDiv.innerHTML = `
+                <div class="result-header">
+                    <h2>${result.title}</h2>
+                    <p>${result.subtitle}</p>
+                </div>
+
+                <div class="result-content">
+                    <h3>Your AI Opportunity Profile</h3>
+                    <p>${result.description}</p>
+                </div>
+
+                <div class="result-content">
+                    <h3>Recommended Next Steps</h3>
+                    <ul>
+                        ${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="result-content">
+                    <h3>Your Path Forward</h3>
+                    <p><strong>${result.nextSteps}</strong></p>
+                    ${result.timeline ? `<p><em>Timeline: ${result.timeline}</em></p>` : ''}
+                </div>
+
+                <div class="cta-box">
+                    <h3>Ready to Get Started?</h3>
+                    <p>Choose your next step based on where you want to focus first:</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+                        ${result.buttons.map(btn => `
+                            <button class="start-btn" onclick="window.location.href='${btn.url}'" style="background: ${btn.primary ? '#F6AD55' : 'white'}; color: ${btn.primary ? '#000' : '#215E8D'}; border: ${btn.primary ? 'none' : '2px solid #215E8D'};">
+                                ${btn.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.classList.add('active');
+        }
+
+        // Add click handlers for options
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Remove selected class from siblings
+                    this.parentElement.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
