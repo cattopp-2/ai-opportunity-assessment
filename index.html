@@ -696,7 +696,7 @@
                         'Learn how to train AI to write in your voice using proven frameworks'
                     ],
                     nextSteps: 'Start with foundational systems and learn how to use AI effectively. The Copy Whisperer will help you train AI to sound like you, and you can learn to build custom bots that support your specific workflows.',
-                    timeline: '3-6 months to establish systems, then ready for AI implementation',
+                    timeline: '3-6 months to establish systems, then you\'re ready for advanced AI implementation',
                     buttons: [
                         { text: 'Book Free Strategy Session', url: 'https://copywriterinyourpocket.com/ai-strategy-session', primary: true },
                         { text: 'Get The Copy Whisperer', url: 'https://copywriterinyourpocket.com/copy-whisperer', primary: false },
@@ -708,17 +708,18 @@
                     subtitle: 'Perfect Timing for AI Implementation',
                     description: 'You\'re in the sweet spot! You have established processes that are working, but they\'re eating up too much of your time. AI automation can give you significant time savings while maintaining quality.',
                     recommendations: [
+                        'Create an AI Copywriter that writes like your brand',
                         'Automate your content repurposing (blog posts to social media, videos to multiple formats)',
-                        'Implement AI-powered email sequences and follow-ups',
-                        'Set up automated lead capture and qualification systems',
                         'Create custom GPTs for your specific business workflows',
-                        'Build systems to transform one piece of content into 10+ assets'
+                        'Create custom bots to enhance your programmes',
+                        'Use AI to create new income streams',
+                        'Build systems that automate your business and help you grow'
                     ],
                     nextSteps: 'You\'re ready for a custom AI automation strategy. The AI Growth Lab gives you hands-on support to build the assets that actually move the needle - from custom bots to content systems that work while you sleep.',
                     timeline: '4-8 weeks to implement your first automation systems',
                     buttons: [
                         { text: 'Book Free Strategy Session', url: 'https://copywriterinyourpocket.com/ai-strategy-session', primary: true },
-                        { text: 'Join AI Growth Lab Waiting List', url: 'https://copywriterinyourpocket.com/ai-growth-lab-waiting-list', primary: false }
+                        { text: 'Check Out The AI Growth Lab', url: 'https://docs.google.com/document/d/1ianCed0vU9UfmDEyBEHfdGdvoY2KbtsBQpht8Tw3Z4I/edit?tab=t.0', primary: false }
                     ]
                 },
                 scale: {
@@ -730,13 +731,12 @@
                         'Create AI-powered course creation and delivery workflows',
                         'Build automated client onboarding and support systems',
                         'Develop custom AI tools for your specific methodology',
-                        'Integrate AI across your entire marketing funnel',
-                        'Set up data-driven optimisation using AI analytics'
+                        'Integrate AI across your entire marketing funnel'
                     ],
                     nextSteps: 'You\'re ready for strategic AI implementation across multiple business areas. An AI Audit will give you a complete 90-day roadmap showing where you\'re wasting time and how to plug revenue leaks, plus identify your biggest opportunities for automation.',
                     buttons: [
                         { text: 'Book Free Strategy Session', url: 'https://copywriterinyourpocket.com/ai-strategy-session', primary: true },
-                        { text: 'Get Your AI Audit (£100)', url: 'https://links.usegoldstar.com/widget/booking/X87mTJEzyUAxjDwJgT5b', primary: false }
+                        { text: 'Get Your AI Audit', url: 'https://docs.google.com/document/d/1fpqVj7Bnfvkk71mxXvteKd86iVjbC9PW-K-wquLgKdA/edit?tab=t.0', primary: false }
                     ]
                 }
             };
@@ -772,7 +772,7 @@
                     <p>Choose your next step based on where you want to focus first:</p>
                     <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
                         ${result.buttons.map(btn => `
-                            <button class="start-btn" onclick="window.location.href='${btn.url}'" style="background: ${btn.primary ? '#F6AD55' : 'white'}; color: ${btn.primary ? '#000' : '#215E8D'}; border: ${btn.primary ? 'none' : '2px solid #215E8D'};">
+                            <button class="start-btn" onclick="window.open('${btn.url}', '_blank')" style="background: ${btn.primary ? '#F6AD55' : 'white'}; color: ${btn.primary ? '#000' : '#215E8D'}; border: ${btn.primary ? 'none' : '2px solid #215E8D'};">
                                 ${btn.text}
                             </button>
                         `).join('')}
